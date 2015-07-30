@@ -50,11 +50,13 @@ var logger = require('./logger');
 
 function addImportReturnDependency(loader, config, propertyName) {
   var msg;
+  var fileNameAbsolute;
   var fileNameResolved;
   var fileName = config[propertyName];
   if (fileName && fileName.length > 0) {
     fileNameResolved = path.relative(loader.context, fileName);
-    if (!fs.existsSync(fileNameResolved)) {
+    fileNameAbsolute = path.resolve(loader.context, fileNameResolved);
+    if (!fs.existsSync(fileNameAbsolute)) {
       msg = 'Could not find path to config.' + propertyName + ': ' + fileNameResolved;
       console.error('ERROR: ' + msg);
       throw new Error(msg);
